@@ -3,7 +3,6 @@ from datetime import timedelta, datetime
 from functools import wraps
 
 import json
-import ap_functions
 import jwt
 
 app = Flask(__name__)
@@ -36,15 +35,11 @@ def login():
 
     return make_response('Could not verify!',401, {'WWW-Authenticate' : 'Basic realm="Login Required"'})
 
-@app.route('/lastProgression/<root>/<firstnumber>/<count>')
+@app.route('/testAuth')
 @token_required
-def lastProgression(root, firstnumber, count) -> int:
-    return ap_functions.calculate_last_number_arithmetic_progression(root,firstnumber,count)
+def testAuth() -> str:
+    return "Ok with authentication"
 
-@app.route('/sumProgression/<root>/<firstnumber>/<count>')
-def sumProgression(root, firstnumber, count) -> int:
-    return ap_functions.calculate_sum_number_arithmetic_progression(root,firstnumber,count)
-
-@app.route('/getMembers/<root>/<firstnumber>/<count>')
-def getMembers(root, firstnumber, count) -> int:
-    return json.dumps(ap_functions.getApMembers(root,firstnumber,count),default=lambda o: o.encode(), indent=4)
+@app.route('/testNoAuth')
+def testNoAuth() -> str:
+    return "Ok with no authentication"
